@@ -63,7 +63,7 @@
     
     .nav {
       display: flex;
-      gap: 30px;
+      gap: 25px;
     }
     
     .nav a {
@@ -71,9 +71,10 @@
       color: rgba(255, 255, 255, 0.8);
       font-weight: 500;
       transition: color 0.3s;
+      white-space: nowrap;
     }
     
-    .nav a:hover {
+    .nav a:hover, .nav a.active {
       color: #ff6b35;
     }
     
@@ -395,11 +396,14 @@
       
       .header-content {
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
       }
       
       .nav {
-        gap: 20px;
+        gap: 15px;
+        font-size: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
       }
     }
   </style>
@@ -412,7 +416,11 @@
         <div class="logo-text">TrackinMore</div>
       </div>
       <nav class="nav">
+        <a href="index.html" class="active">Suivi</a>
         <a href="support.html">Support</a>
+        <a href="faq.html">FAQ</a>
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="confidentialite.html">Confidentialité</a>
       </nav>
     </div>
   </div>
@@ -475,7 +483,6 @@
     ];
 
     function validateTrackingNumber(trackingNumber) {
-      // Validation pour formats internationaux réalistes (FR, 8R, EE, RR, etc.)
       const regex = /^[A-Z0-9]{2}\d{9,12}(FR)?$/;
       return regex.test(trackingNumber.toUpperCase());
     }
@@ -497,20 +504,10 @@
       return Math.round((end - start) / oneDay);
     }
 
-    function formatDate(date) {
-      return new Date(date).toLocaleDateString('fr-FR', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    }
-
     function showMessage(message, type = 'error') {
       const errorMsg = document.getElementById('errorMessage');
       const successMsg = document.getElementById('successMessage');
       
-      // Reset both messages
       errorMsg.classList.add('hidden');
       successMsg.classList.add('hidden');
       
@@ -538,7 +535,6 @@
         return;
       }
       
-      // Simulation d'un chargement
       searchBtn.classList.add('loading');
       
       setTimeout(() => {
@@ -546,9 +542,8 @@
         const startDate = params.date || new Date().toISOString().split('T')[0];
         const today = new Date().toISOString().split('T')[0];
         const daysPassed = Math.max(0, daysBetween(startDate, today));
-        const currentDay = Math.min(daysPassed, 7); // Max 7 étapes - colis bloqué après
+        const currentDay = Math.min(daysPassed, 7);
         
-        // Update header with more generic status
         document.getElementById('packageNumber').textContent = `Colis TrackinMore ${trackingNumber}`;
         
         let headerStatus;
@@ -564,14 +559,12 @@
         
         document.getElementById('packageStatus').textContent = headerStatus;
         
-        // Generate timeline
         generateTimeline(currentDay);
         
         showMessage("Suivi mis à jour avec succès!", 'success');
         trackingResults.style.display = 'block';
         searchBtn.classList.remove('loading');
         
-        // Update URL without refresh
         const newUrl = `${window.location.pathname}?numero=${trackingNumber}&date=${startDate}`;
         history.pushState({}, '', newUrl);
       }, 1000);
@@ -581,7 +574,6 @@
       const timeline = document.getElementById('timeline');
       timeline.innerHTML = '';
       
-      // Show only steps up to current day (NO future steps)
       for (let day = 0; day <= currentDay; day++) {
         const item = document.createElement('div');
         item.className = 'timeline-item';
@@ -604,7 +596,6 @@
       }
     }
 
-    // Auto-load if URL params present
     document.addEventListener('DOMContentLoaded', function() {
       const params = getUrlParams();
       if (params.numero && params.numero !== '{tracking_number}') {
@@ -613,7 +604,6 @@
       }
     });
 
-    // Allow tracking on Enter key
     document.getElementById('trackingNumber').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         trackPackage();
