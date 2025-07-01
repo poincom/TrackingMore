@@ -319,10 +319,42 @@
       <p class="subtitle">Une question sur votre commande ? Un problème de livraison ?<br>Notre équipe est là pour vous aider.</p>
       
       <form class="form-container" action="https://formsubmit.co/support@byvibefit.com" method="POST">
-        <input type="text" name="name" placeholder="Votre nom" required style="padding: 10px; margin: 10px 0; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
-        <input type="email" name="email" placeholder="Votre email" required style="padding: 10px; margin: 10px 0; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
-        <textarea name="message" placeholder="Votre message" required style="padding: 10px; margin: 10px 0; width: 100%; height: 100px; border: 1px solid #ccc; border-radius: 5px;"></textarea>
-        <button type="submit" style="padding: 15px 30px; background: #ff6b35; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">TEST ENVOI</button>
+        <div class="form-group">
+          <label class="form-label" for="name">Nom complet *</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Votre nom" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="email">Adresse email *</label>
+          <input type="email" id="email" name="email" class="form-input" placeholder="votre@email.com" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="tracking">Numéro de suivi (optionnel)</label>
+          <input type="text" id="tracking" name="tracking_number" class="form-input" placeholder="FR123456789">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="subject">Type de demande *</label>
+          <select id="subject" name="request_type" class="form-select" required>
+            <option value="">Sélectionnez un sujet</option>
+            <option value="suivi-probleme">Problème avec le suivi</option>
+            <option value="numero-invalide">Numéro de suivi non reconnu</option>
+            <option value="informations-incorrectes">Informations de suivi incorrectes</option>
+            <option value="pas-de-mise-a-jour">Aucune mise à jour depuis longtemps</option>
+            <option value="erreur-technique">Erreur technique sur le site</option>
+            <option value="autre">Autre question</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="message">Votre message *</label>
+          <textarea id="message" name="message" class="form-textarea" placeholder="Décrivez votre problème en détail..." required></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          Envoyer ma demande
+        </button>
       </form>
       
       <div id="successMessage" class="success-message">
