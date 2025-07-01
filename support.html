@@ -318,7 +318,13 @@
       <h1 class="title">Support Client</h1>
       <p class="subtitle">Une question sur votre commande ? Un problème de livraison ?<br>Notre équipe est là pour vous aider.</p>
       
-      <form class="form-container" id="supportForm">
+      <form class="form-container" id="supportForm" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="3b26ee85-0895-4c0c-ae06-ca7848edc049">
+        <input type="hidden" name="subject" value="Nouveau message support TrackinMore">
+        <input type="hidden" name="redirect" value="false">
+        <input type="hidden" name="from_name" value="TrackinMore Support">
+        <input type="hidden" name="replyto" id="replyto">
+        
         <div class="form-group">
           <label class="form-label" for="name">Nom complet *</label>
           <input type="text" id="name" name="name" class="form-input" placeholder="Votre nom" required>
@@ -331,19 +337,18 @@
         
         <div class="form-group">
           <label class="form-label" for="tracking">Numéro de suivi (optionnel)</label>
-          <input type="text" id="tracking" name="tracking" class="form-input" placeholder="FR123456789">
+          <input type="text" id="tracking" name="tracking_number" class="form-input" placeholder="FR123456789">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="subject">Type de demande *</label>
-          <select id="subject" name="subject" class="form-select" required>
+          <select id="subject" name="request_type" class="form-select" required>
             <option value="">Sélectionnez un sujet</option>
-            <option value="livraison">Problème de livraison</option>
-            <option value="retard">Colis en retard</option>
-            <option value="perdu">Colis perdu</option>
-            <option value="endommage">Colis endommagé</option>
-            <option value="modification">Modification d'adresse</option>
-            <option value="remboursement">Demande de remboursement</option>
+            <option value="suivi-probleme">Problème avec le suivi</option>
+            <option value="numero-invalide">Numéro de suivi non reconnu</option>
+            <option value="informations-incorrectes">Informations de suivi incorrectes</option>
+            <option value="pas-de-mise-a-jour">Aucune mise à jour depuis longtemps</option>
+            <option value="erreur-technique">Erreur technique sur le site</option>
             <option value="autre">Autre question</option>
           </select>
         </div>
@@ -383,6 +388,9 @@
       const successMessage = document.getElementById('successMessage');
       const errorMessage = document.getElementById('errorMessage');
       
+      // Set replyto field to user's email
+      document.getElementById('replyto').value = document.getElementById('email').value;
+      
       // Reset messages
       successMessage.style.display = 'none';
       errorMessage.style.display = 'none';
@@ -390,52 +398,45 @@
       // Show loading state
       submitBtn.classList.add('loading');
       submitBtn.textContent = 'Envoi en cours...';
+      submitBtn.disabled = true;
       
       // Get form data
-      const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        tracking: document.getElementById('tracking').value,
-        subject: document.getElementById('subject').value,
-        message: document.getElementById('message').value
-      };
+      const formData = new FormData(this);
       
-      // Simulate sending (replace with actual email service)
-      setTimeout(() => {
-        // Format email content
-        const emailContent = `
-Nouvelle demande de support TrackinMore
-
-Nom: ${formData.name}
-Email: ${formData.email}
-Numéro de suivi: ${formData.tracking || 'Non renseigné'}
-Type de demande: ${formData.subject}
-
-Message:
-${formData.message}
-
----
-Envoyé depuis le formulaire de support TrackinMore
-        `.trim();
-        
-        // Here you would integrate with your email service
-        // For now, we'll just show success
-        console.log('Email to send to support@byvibefit.com:', emailContent);
-        
-        // Show success
+      // Send to Web3Forms
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Show success
+          submitBtn.classList.remove('loading');
+          submitBtn.textContent = 'Message envoyé !';
+          submitBtn.style.background = '#28a745';
+          successMessage.style.display = 'block';
+          
+          // Reset form
+          document.getElementById('supportForm').reset();
+          
+          // Reset button after 3 seconds
+          setTimeout(() => {
+            submitBtn.textContent = 'Envoyer ma demande';
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+          }, 3000);
+        } else {
+          throw new Error('Erreur lors de l\'envoi');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
         submitBtn.classList.remove('loading');
-        submitBtn.textContent = 'Message envoyé !';
-        successMessage.style.display = 'block';
-        
-        // Reset form
-        document.getElementById('supportForm').reset();
-        
-        // Reset button after 3 seconds
-        setTimeout(() => {
-          submitBtn.textContent = 'Envoyer ma demande';
-        }, 3000);
-        
-      }, 2000);
+        submitBtn.textContent = 'Envoyer ma demande';
+        submitBtn.disabled = false;
+        errorMessage.style.display = 'block';
+      });
     });
     
     // Auto-fill tracking number from URL params
