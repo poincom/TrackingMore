@@ -318,16 +318,10 @@
       <h1 class="title">Support Client</h1>
       <p class="subtitle">Une question sur votre commande ? Un problème de livraison ?<br>Notre équipe est là pour vous aider.</p>
       
-      <form class="form-container" id="supportForm" action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="3b26ee85-0895-4c0c-ae06-ca7848edc049">
-        <input type="hidden" name="subject" value="Nouveau message support TrackinMore">
-        <input type="hidden" name="redirect" value="false">
-        <input type="hidden" name="from_name" value="TrackinMore Support">
-        <input type="hidden" name="to" value="support@byvibefit.com">
-        <input type="hidden" name="replyto" id="replyto">
-        
-        <!-- Honeypot Spam Protection -->
-        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+      <form class="form-container" id="supportForm" action="https://formsubmit.co/support@byvibefit.com" method="POST">
+        <input type="hidden" name="_subject" value="Nouveau message support TrackinMore">
+        <input type="hidden" name="_next" value="">
+        <input type="hidden" name="_captcha" value="false">
         
         <div class="form-group">
           <label class="form-label" for="name">Nom complet *</label>
@@ -385,64 +379,6 @@
   </footer>
 
   <script>
-    document.getElementById('supportForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const submitBtn = document.getElementById('submitBtn');
-      const successMessage = document.getElementById('successMessage');
-      const errorMessage = document.getElementById('errorMessage');
-      
-      // Set replyto field to user's email
-      document.getElementById('replyto').value = document.getElementById('email').value;
-      
-      // Reset messages
-      successMessage.style.display = 'none';
-      errorMessage.style.display = 'none';
-      
-      // Show loading state
-      submitBtn.classList.add('loading');
-      submitBtn.textContent = 'Envoi en cours...';
-      submitBtn.disabled = true;
-      
-      // Get form data
-      const formData = new FormData(this);
-      
-      // Send to Web3Forms
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Show success
-          submitBtn.classList.remove('loading');
-          submitBtn.textContent = 'Message envoyé !';
-          submitBtn.style.background = '#28a745';
-          successMessage.style.display = 'block';
-          
-          // Reset form
-          document.getElementById('supportForm').reset();
-          
-          // Reset button after 3 seconds
-          setTimeout(() => {
-            submitBtn.textContent = 'Envoyer ma demande';
-            submitBtn.style.background = '';
-            submitBtn.disabled = false;
-          }, 3000);
-        } else {
-          throw new Error('Erreur lors de l\'envoi');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        submitBtn.classList.remove('loading');
-        submitBtn.textContent = 'Envoyer ma demande';
-        submitBtn.disabled = false;
-        errorMessage.style.display = 'block';
-      });
-    });
-    
     // Auto-fill tracking number from URL params
     document.addEventListener('DOMContentLoaded', function() {
       const params = new URLSearchParams(window.location.search);
@@ -450,7 +386,22 @@
       if (trackingNumber) {
         document.getElementById('tracking').value = trackingNumber;
       }
+      
+      // Set next page URL to current page for redirect
+      const currentUrl = window.location.href.split('?')[0];
+      document.querySelector('input[name="_next"]').value = currentUrl + '?sent=true';
     });
+    
+    // Show success message if redirected after send
+    if (window.location.search.includes('sent=true')) {
+      const successMessage = document.getElementById('successMessage');
+      successMessage.style.display = 'block';
+      successMessage.innerHTML = '✅ Votre message a été envoyé avec succès ! Notre équipe vous répondra sous 24h.';
+      
+      // Remove the sent parameter from URL
+      const newUrl = window.location.href.split('?')[0];
+      history.replaceState({}, '', newUrl);
+    }
   </script>
 </body>
 </html>
