@@ -63,7 +63,7 @@
     
     .nav {
       display: flex;
-      gap: 30px;
+      gap: 25px;
     }
     
     .nav a {
@@ -71,6 +71,7 @@
       color: rgba(255, 255, 255, 0.8);
       font-weight: 500;
       transition: color 0.3s;
+      white-space: nowrap;
     }
     
     .nav a:hover, .nav a.active {
@@ -179,18 +180,115 @@
       font-size: 12px;
     }
     
+    /* RESPONSIVE MOBILE - LARGEMENT AMÉLIORÉ */
     @media (max-width: 768px) {
+      .container {
+        margin: 30px auto;
+        padding: 0 15px;
+      }
+      
       .privacy-section {
         padding: 30px 20px;
       }
       
       .header-content {
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
       }
       
       .nav {
-        gap: 20px;
+        gap: 15px;
+        font-size: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .title {
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+      
+      .subtitle {
+        font-size: 16px;
+        margin-bottom: 30px;
+      }
+      
+      .icon {
+        width: 56px;
+        height: 56px;
+        font-size: 28px;
+        margin-bottom: 15px;
+      }
+      
+      .privacy-section-title {
+        font-size: 20px;
+        margin: 25px 0 12px 0;
+        padding-bottom: 8px;
+      }
+      
+      .privacy-section-title:first-child {
+        margin-top: 0;
+      }
+      
+      .privacy-text {
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 12px;
+      }
+      
+      .privacy-list {
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 12px 0;
+        padding-left: 18px;
+      }
+      
+      .privacy-list li {
+        margin-bottom: 6px;
+      }
+      
+      .logo-text {
+        font-size: 20px;
+      }
+      
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+      }
+    }
+    
+    /* RESPONSIVE TRÈS PETIT ÉCRAN */
+    @media (max-width: 480px) {
+      .privacy-section {
+        padding: 25px 15px;
+      }
+      
+      .title {
+        font-size: 24px;
+      }
+      
+      .subtitle {
+        font-size: 15px;
+      }
+      
+      .privacy-section-title {
+        font-size: 18px;
+        margin: 20px 0 10px 0;
+      }
+      
+      .privacy-text {
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+      
+      .privacy-list {
+        font-size: 13px;
+        margin: 10px 0;
+        padding-left: 16px;
+      }
+      
+      .privacy-list li {
+        margin-bottom: 4px;
       }
     }
   </style>
