@@ -328,41 +328,53 @@
         <!-- Clé API Web3Forms (cachée) -->
         <input type="hidden" name="access_key" value="f5f1ba6e-3963-4a67-afad-7743e8cb1cad">
         
-        <!-- Champs anti-spam (cachés) -->
-        <input type="hidden" name="subject" value="Nouveau message depuis TrackinMore Support">
+        <!-- Configuration personnalisée de l'email -->
+        <input type="hidden" name="subject" value="🎯 Nouveau message TrackinMore Support">
+        <input type="hidden" name="from_name" value="TrackinMore Support">
+        <input type="checkbox" name="botcheck" id="" style="display: none;">
+        
+        <!-- Configuration personnalisée de l'email -->
+        <input type="hidden" name="subject" value="🎯 Nouveau message TrackinMore Support">
+        <input type="hidden" name="from_name" value="TrackinMore Support">
+        <input type="hidden" name="replyto" id="replyto_hidden">
+        <input type="checkbox" name="botcheck" id="" style="display: none;">
+        
+        <!-- Configuration Web3Forms -->
+        <input type="hidden" name="subject" value="🎯 TrackinMore Support - Nouveau message client">
+        <input type="hidden" name="from_name" value="TrackinMore Support">
         <input type="checkbox" name="botcheck" id="" style="display: none;">
         
         <div class="form-group">
           <label class="form-label" for="name">Nom complet *</label>
-          <input type="text" id="name" name="name" class="form-input" placeholder="Votre nom" required>
+          <input type="text" id="name" name="👤 Nom du client" class="form-input" placeholder="Votre nom" required>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="email">Adresse email *</label>
-          <input type="email" id="email" name="email" class="form-input" placeholder="votre@email.com" required>
+          <input type="email" id="email" name="📧 Email du client" class="form-input" placeholder="votre@email.com" required>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="tracking">Numéro de suivi (optionnel)</label>
-          <input type="text" id="tracking" name="tracking_number" class="form-input" placeholder="8R692719325FR">
+          <input type="text" id="tracking" name="📦 Numéro de suivi" class="form-input" placeholder="8R692719325FR">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="request_type">Type de demande *</label>
-          <select id="request_type" name="request_type" class="form-select" required>
+          <select id="request_type" name="🎯 Type de demande" class="form-select" required>
             <option value="">Sélectionnez un sujet</option>
-            <option value="suivi-probleme">Problème avec le suivi</option>
-            <option value="numero-invalide">Numéro de suivi non reconnu</option>
-            <option value="informations-incorrectes">Informations de suivi incorrectes</option>
-            <option value="pas-de-mise-a-jour">Aucune mise à jour depuis longtemps</option>
-            <option value="erreur-technique">Erreur technique sur le site</option>
-            <option value="autre">Autre question</option>
+            <option value="🔍 Problème avec le suivi">Problème avec le suivi</option>
+            <option value="❌ Numéro de suivi non reconnu">Numéro de suivi non reconnu</option>
+            <option value="⚠️ Informations de suivi incorrectes">Informations de suivi incorrectes</option>
+            <option value="⏰ Aucune mise à jour depuis longtemps">Aucune mise à jour depuis longtemps</option>
+            <option value="🐛 Erreur technique sur le site">Erreur technique sur le site</option>
+            <option value="❓ Autre question">Autre question</option>
           </select>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="message">Votre message *</label>
-          <textarea id="message" name="message" class="form-textarea" placeholder="Décrivez votre problème en détail..." required></textarea>
+          <textarea id="message" name="💬 Message détaillé" class="form-textarea" placeholder="Décrivez votre problème en détail..." required></textarea>
         </div>
         
         <button type="submit" class="submit-btn" id="submitBtn">
