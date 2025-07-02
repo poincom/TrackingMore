@@ -339,29 +339,34 @@
         <input type="hidden" name="replyto" id="replyto_hidden">
         <input type="checkbox" name="botcheck" id="" style="display: none;">
         
-        <!-- Configuration Web3Forms -->
+        <!-- Configuration Web3Forms avec template personnalisé -->
         <input type="hidden" name="subject" value="🎯 TrackinMore Support - Nouveau message client">
         <input type="hidden" name="from_name" value="TrackinMore Support">
         <input type="checkbox" name="botcheck" id="" style="display: none;">
         
+        <!-- Template email personnalisé -->
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_format" value="html">
+        <input type="hidden" name="_autoresponse" value="Merci pour votre message ! Notre équipe TrackinMore vous répondra sous 24h.">
+        
         <div class="form-group">
           <label class="form-label" for="name">Nom complet *</label>
-          <input type="text" id="name" name="👤 Nom du client" class="form-input" placeholder="Votre nom" required>
+          <input type="text" id="name" name="Nom du client" class="form-input" placeholder="Votre nom" required>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="email">Adresse email *</label>
-          <input type="email" id="email" name="📧 Email du client" class="form-input" placeholder="votre@email.com" required>
+          <input type="email" id="email" name="Email du client" class="form-input" placeholder="votre@email.com" required>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="tracking">Numéro de suivi (optionnel)</label>
-          <input type="text" id="tracking" name="📦 Numéro de suivi" class="form-input" placeholder="8R692719325FR">
+          <input type="text" id="tracking" name="Numéro de suivi" class="form-input" placeholder="8R692719325FR">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="request_type">Type de demande *</label>
-          <select id="request_type" name="🎯 Type de demande" class="form-select" required>
+          <select id="request_type" name="Type de demande" class="form-select" required>
             <option value="">Sélectionnez un sujet</option>
             <option value="🔍 Problème avec le suivi">Problème avec le suivi</option>
             <option value="❌ Numéro de suivi non reconnu">Numéro de suivi non reconnu</option>
@@ -374,7 +379,7 @@
         
         <div class="form-group">
           <label class="form-label" for="message">Votre message *</label>
-          <textarea id="message" name="💬 Message détaillé" class="form-textarea" placeholder="Décrivez votre problème en détail..." required></textarea>
+          <textarea id="message" name="Message détaillé" class="form-textarea" placeholder="Décrivez votre problème en détail..." required></textarea>
         </div>
         
         <button type="submit" class="submit-btn" id="submitBtn">
@@ -419,6 +424,11 @@
       
       try {
         const formData = new FormData(form);
+        
+        // IMPORTANT: Configurer le Reply-To avec l'email du client
+        const clientEmail = document.getElementById('email').value;
+        formData.append('_replyto', clientEmail);
+        formData.append('_cc', clientEmail);
         
         const response = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
