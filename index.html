@@ -449,7 +449,7 @@
             type="text" 
             class="search-input" 
             id="trackingNumber"
-            placeholder="Ex: FR123456789"
+            placeholder="Ex: 8R692719325FR"
           >
           <button class="search-btn" onclick="trackPackage()" id="searchBtn">
             <span>Suivre</span>
@@ -494,8 +494,11 @@
       { day: 7, status: "En attente de régularisation administrative" }
     ];
 
+    // NOUVELLE VALIDATION STRICTE POUR COLISSIMO UNIQUEMENT
     function validateTrackingNumber(trackingNumber) {
-      const regex = /^[A-Z0-9]{2}\d{9,12}(FR)?$/;
+      // Format Colissimo: 1 chiffre + 1 lettre + 9 chiffres + optionnel "FR"
+      // Exemples valides: 8R692719325FR, 8R692719325, 6R123456789FR
+      const regex = /^[0-9][A-Z][0-9]{9}(FR)?$/;
       return regex.test(trackingNumber.toUpperCase());
     }
 
@@ -543,7 +546,7 @@
       }
       
       if (!validateTrackingNumber(trackingNumber)) {
-        showMessage("Format de numéro de suivi invalide. Utilisez le format: FR123456789");
+        showMessage("Format de numéro de suivi invalide. Utilisez le format Colissimo: 8R692719325FR");
         return;
       }
       
