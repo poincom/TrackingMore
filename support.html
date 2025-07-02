@@ -207,6 +207,12 @@
       transform: translateY(0);
     }
     
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
     .submit-btn.loading::after {
       content: '';
       position: absolute;
@@ -318,7 +324,14 @@
       <h1 class="title">Support Client</h1>
       <p class="subtitle">Une question sur votre commande ? Un problème de livraison ?<br>Notre équipe est là pour vous aider.</p>
       
-      <form class="form-container" action="https://formsubmit.co/support@byvibefit.com" method="POST">
+      <form class="form-container" id="supportForm">
+        <!-- Clé API Web3Forms (cachée) -->
+        <input type="hidden" name="access_key" value="f5f1ba6e-3963-4a67-afad-7743e8cb1cad">
+        
+        <!-- Champs anti-spam (cachés) -->
+        <input type="hidden" name="subject" value="Nouveau message depuis TrackinMore Support">
+        <input type="checkbox" name="botcheck" id="" style="display: none;">
+        
         <div class="form-group">
           <label class="form-label" for="name">Nom complet *</label>
           <input type="text" id="name" name="name" class="form-input" placeholder="Votre nom" required>
@@ -331,12 +344,12 @@
         
         <div class="form-group">
           <label class="form-label" for="tracking">Numéro de suivi (optionnel)</label>
-          <input type="text" id="tracking" name="tracking_number" class="form-input" placeholder="FR123456789">
+          <input type="text" id="tracking" name="tracking_number" class="form-input" placeholder="8R692719325FR">
         </div>
         
         <div class="form-group">
-          <label class="form-label" for="subject">Type de demande *</label>
-          <select id="subject" name="request_type" class="form-select" required>
+          <label class="form-label" for="request_type">Type de demande *</label>
+          <select id="request_type" name="request_type" class="form-select" required>
             <option value="">Sélectionnez un sujet</option>
             <option value="suivi-probleme">Problème avec le suivi</option>
             <option value="numero-invalide">Numéro de suivi non reconnu</option>
@@ -352,7 +365,7 @@
           <textarea id="message" name="message" class="form-textarea" placeholder="Décrivez votre problème en détail..." required></textarea>
         </div>
         
-        <button type="submit" class="submit-btn">
+        <button type="submit" class="submit-btn" id="submitBtn">
           Envoyer ma demande
         </button>
       </form>
@@ -375,8 +388,55 @@
   </footer>
 
   <script>
-    // Simple script without errors
-    console.log('TrackinMore Support Page Loaded');
+    const form = document.getElementById('supportForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Masquer les messages précédents
+      successMessage.style.display = 'none';
+      errorMessage.style.display = 'none';
+      
+      // Animation de chargement
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi en cours...';
+      
+      try {
+        const formData = new FormData(form);
+        
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Succès
+          successMessage.style.display = 'block';
+          form.reset();
+          
+          // Scroll vers le message de succès
+          successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          throw new Error('Erreur lors de l\'envoi');
+        }
+        
+      } catch (error) {
+        // Erreur
+        errorMessage.style.display = 'block';
+        errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } finally {
+        // Restaurer le bouton
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer ma demande';
+      }
+    });
   </script>
 </body>
 </html>
