@@ -63,7 +63,7 @@
     
     .nav {
       display: flex;
-      gap: 30px;
+      gap: 25px;
     }
     
     .nav a {
@@ -71,6 +71,7 @@
       color: rgba(255, 255, 255, 0.8);
       font-weight: 500;
       transition: color 0.3s;
+      white-space: nowrap;
     }
     
     .nav a:hover, .nav a.active {
@@ -89,6 +90,7 @@
       border-radius: 16px;
       padding: 50px;
       backdrop-filter: blur(20px);
+      text-align: center;
     }
     
     .icon {
@@ -109,14 +111,12 @@
       font-weight: 700;
       color: #fff;
       margin-bottom: 10px;
-      text-align: center;
     }
     
     .subtitle {
       color: rgba(255, 255, 255, 0.7);
       font-size: 18px;
       margin-bottom: 40px;
-      text-align: center;
       line-height: 1.5;
     }
     
@@ -127,6 +127,7 @@
       margin-bottom: 20px;
       overflow: hidden;
       transition: all 0.3s ease;
+      text-align: left;
     }
     
     .faq-item:hover {
@@ -148,6 +149,8 @@
       color: #ff6b35;
       font-size: 18px;
       transition: transform 0.3s ease;
+      flex-shrink: 0;
+      margin-left: 15px;
     }
     
     .faq-item.active .faq-icon {
@@ -186,6 +189,7 @@
       font-size: 16px;
       outline: none;
       transition: border-color 0.3s;
+      backdrop-filter: blur(10px);
     }
     
     .search-input::placeholder {
@@ -222,18 +226,116 @@
       font-size: 12px;
     }
     
+    /* RESPONSIVE MOBILE - LARGEMENT AMÉLIORÉ */
     @media (max-width: 768px) {
+      .container {
+        margin: 30px auto;
+        padding: 0 15px;
+      }
+      
       .faq-section {
         padding: 30px 20px;
       }
       
       .header-content {
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
       }
       
       .nav {
-        gap: 20px;
+        gap: 15px;
+        font-size: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .title {
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+      
+      .subtitle {
+        font-size: 16px;
+        margin-bottom: 30px;
+      }
+      
+      .icon {
+        width: 56px;
+        height: 56px;
+        font-size: 28px;
+        margin-bottom: 15px;
+      }
+      
+      .faq-question {
+        padding: 18px 20px;
+        font-size: 15px;
+        align-items: flex-start;
+      }
+      
+      .faq-question span:first-child {
+        flex: 1;
+        padding-right: 10px;
+        line-height: 1.4;
+      }
+      
+      .faq-icon {
+        margin-left: 10px;
+        font-size: 16px;
+        margin-top: 2px;
+      }
+      
+      .faq-answer-content {
+        padding: 0 20px 20px 20px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      
+      .search-input {
+        padding: 14px 18px;
+        font-size: 15px;
+      }
+      
+      .faq-item.active .faq-answer {
+        max-height: 250px;
+      }
+      
+      .logo-text {
+        font-size: 20px;
+      }
+      
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+      }
+    }
+    
+    /* RESPONSIVE TRÈS PETIT ÉCRAN */
+    @media (max-width: 480px) {
+      .faq-section {
+        padding: 25px 15px;
+      }
+      
+      .title {
+        font-size: 24px;
+      }
+      
+      .subtitle {
+        font-size: 15px;
+      }
+      
+      .faq-question {
+        padding: 15px 18px;
+        font-size: 14px;
+      }
+      
+      .faq-answer-content {
+        padding: 0 18px 18px 18px;
+        font-size: 13px;
+      }
+      
+      .search-input {
+        padding: 12px 16px;
+        font-size: 14px;
       }
     }
   </style>
@@ -285,7 +387,7 @@
           </div>
           <div class="faq-answer">
             <div class="faq-answer-content">
-              Notre système accepte la plupart des formats internationaux : FR123456789, 8R123456789FR, EE123456789FR, RR123456789FR, etc. Le numéro doit contenir entre 11 et 15 caractères avec lettres et chiffres.
+              Notre système accepte les formats Colissimo français comme 8R692719325FR ou 6R123456789. Le numéro doit commencer par un chiffre suivi d'une lettre et de 9 chiffres.
             </div>
           </div>
         </div>
@@ -304,12 +406,12 @@
         
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
-            <span>Erreur "Format de numéro de suivi invalide"</span>
+            <span>Erreur "Numéro invalide. Format attendu: 8R692719325FR"</span>
             <span class="faq-icon">+</span>
           </div>
           <div class="faq-answer">
             <div class="faq-answer-content">
-              Vérifiez que votre numéro de suivi est correct et complet. Assurez-vous qu'il ne contient pas d'espaces ou de caractères spéciaux. Si l'erreur persiste, le numéro pourrait ne pas être encore activé dans le système.
+              Vérifiez que votre numéro de suivi respecte le format Colissimo : un chiffre, une lettre, puis 9 chiffres. Exemples valides : 8R692719325FR, 6R123456789, 9A987654321FR.
             </div>
           </div>
         </div>
