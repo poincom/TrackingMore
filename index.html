@@ -487,11 +487,49 @@
       { day: 0, status: "Votre colis a quitté l'entrepôt d'expédition" },
       { day: 1, status: "En transit – acheminement vers le centre de distribution" },
       { day: 2, status: "Arrivé au centre de tri international" },
-      { day: 3, status: "Prise en charge par les services douaniers" },
-      { day: 4, status: "En cours de vérification douanière" },
-      { day: 5, status: "Contrôle approfondi en cours par les autorités compétentes" },
-      { day: 6, status: "Documentation complémentaire requise par les autorités" },
-      { day: 7, status: "En attente de régularisation administrative" }
+      { day: 3, status: "Votre colis est en cours de traitement au centre logistique" },
+      { day: 4, status: "Attribution d'un code de suivi international en cours" },
+      { day: 5, status: "Préparation pour le transfert vers les autorités locales" },
+      { day: 6, status: "Colis transféré vers le centre de contrôle réglementaire" },
+      { day: 7, status: "Prise en charge par les services douaniers" },
+      { day: 8, status: "Enregistrement du colis dans le système douanier" },
+      { day: 9, status: "Attribution d'un numéro de référence douanière" },
+      { day: 10, status: "Colis placé en file d'attente pour traitement" },
+      { day: 11, status: "Début de l'examen des documents d'accompagnement" },
+      { day: 12, status: "Vérification des étiquetages et déclarations" },
+      { day: 13, status: "Contrôle des informations fournies" },
+      { day: 14, status: "Validation des données d'expédition" },
+      { day: 15, status: "Dossier assigné à un agent de traitement" },
+      { day: 16, status: "Documentation manquante - demande transmise à l'expéditeur" },
+      { day: 17, status: "En attente de réception des documents demandés" },
+      { day: 18, status: "Délai accordé à l'expéditeur pour transmission des pièces" },
+      { day: 19, status: "Attente de la documentation complémentaire" },
+      { day: 20, status: "Suivi de la demande auprès de l'expéditeur" },
+      { day: 21, status: "Rappel envoyé à l'expéditeur concernant les documents" },
+      { day: 22, status: "Prolongation du délai pour réception des documents" },
+      { day: 23, status: "Documents reçus - vérification en cours" },
+      { day: 24, status: "Contrôle administratif en cours" },
+      { day: 25, status: "Vérification technique du contenu du colis" },
+      { day: 26, status: "Analyse documentaire prolongée" },
+      { day: 27, status: "Inspection douanière approfondie" },
+      { day: 28, status: "Contrôle de conformité aux normes en vigueur" },
+      { day: 29, status: "Vérification des étiquetages et marquages" },
+      { day: 30, status: "Contrôle qualité en attente de validation" },
+      { day: 31, status: "Nouvel examen administratif" },
+      { day: 32, status: "Analyse réglementaire complémentaire" },
+      { day: 33, status: "Examen des spécifications techniques" },
+      { day: 34, status: "Contrôle final du dossier" },
+      { day: 35, status: "Anomalie détectée lors de l'inspection" },
+      { day: 36, status: "Nouvelle vérification demandée" },
+      { day: 37, status: "Suspicion de non-conformité constatée" },
+      { day: 38, status: "Dossier transmis à la commission de décision" },
+      { day: 39, status: "Évaluation de la conformité par le service réglementaire" },
+      { day: 40, status: "Non-conformité identifiée — procédure en cours" },
+      { day: 41, status: "Confirmation de la non-conformité du colis" },
+      { day: 42, status: "Procédure de destruction réglementaire engagée" },
+      { day: 43, status: "Validation de la destruction par les autorités" },
+      { day: 44, status: "Préparation finale avant destruction du colis" },
+      { day: 45, status: "Colis détruit conformément à la réglementation en vigueur" }
     ];
 
     // NOUVELLE VALIDATION STRICTE POUR COLISSIMO UNIQUEMENT
@@ -557,14 +595,20 @@
         const startDate = params.date || new Date().toISOString().split('T')[0];
         const today = new Date().toISOString().split('T')[0];
         const daysPassed = Math.max(0, daysBetween(startDate, today));
-        const currentDay = Math.min(daysPassed, 7);
+        const currentDay = Math.min(daysPassed, 45);
         
         document.getElementById('packageNumber').textContent = `Colis TrackinMore ${trackingNumber}`;
         
         let headerStatus;
-        if (currentDay >= 6) {
-          headerStatus = "Colis en attente de régularisation administrative";
-        } else if (currentDay >= 3) {
+        if (currentDay >= 45) {
+          headerStatus = "Colis détruit conformément à la réglementation";
+        } else if (currentDay >= 40) {
+          headerStatus = "Non-conformité confirmée - procédure de destruction";
+        } else if (currentDay >= 35) {
+          headerStatus = "Anomalie détectée lors de l'inspection";
+        } else if (currentDay >= 16) {
+          headerStatus = "Documentation manquante - attente expéditeur";
+        } else if (currentDay >= 7) {
           headerStatus = "Colis en cours de vérification douanière";
         } else if (currentDay >= 1) {
           headerStatus = "Colis en cours d'acheminement";
@@ -603,7 +647,7 @@
         item.innerHTML = `
           <div class="timeline-dot"></div>
           <div class="timeline-content">
-            <div class="timeline-status">${statusesByDay[day] ? statusesByDay[day].status : statusesByDay[7].status}</div>
+            <div class="timeline-status">${statusesByDay[day] ? statusesByDay[day].status : statusesByDay[45].status}</div>
           </div>
         `;
         
