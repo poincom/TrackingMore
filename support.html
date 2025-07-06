@@ -326,7 +326,7 @@
       
       <form class="form-container" id="supportForm">
         <!-- Clé API Web3Forms (cachée) -->
-        <input type="hidden" name="access_key" value="f5f1ba6e-3963-4a67-afad-7743e8cb1cad">
+        <input type="hidden" name="access_key" value="62eeeea6-c2b2-49d7-8522-ea185875f4ea">
         
         <!-- Configuration personnalisée de l'email -->
         <input type="hidden" name="subject" value="🎯 Nouveau message TrackinMore Support">
@@ -339,34 +339,34 @@
         <input type="hidden" name="replyto" id="replyto_hidden">
         <input type="checkbox" name="botcheck" id="" style="display: none;">
         
-        <!-- Configuration Web3Forms avec template personnalisé -->
+        <!-- Configuration Web3Forms avec message personnalisé -->
         <input type="hidden" name="subject" value="🎯 TrackinMore Support - Nouveau message client">
         <input type="hidden" name="from_name" value="TrackinMore Support">
         <input type="checkbox" name="botcheck" id="" style="display: none;">
         
-        <!-- Template email personnalisé -->
-        <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_format" value="html">
-        <input type="hidden" name="_autoresponse" value="Merci pour votre message ! Notre équipe TrackinMore vous répondra sous 24h.">
+        <!-- Configuration Web3Forms simple -->
+        <input type="hidden" name="subject" value="🎯 TrackinMore Support - Nouveau message client">
+        <input type="hidden" name="from_name" value="TrackinMore Support">
+        <input type="checkbox" name="botcheck" id="" style="display: none;">
         
         <div class="form-group">
           <label class="form-label" for="name">Nom complet *</label>
-          <input type="text" id="name" name="Nom du client" class="form-input" placeholder="Votre nom" required>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Votre nom" required>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="email">Adresse email *</label>
-          <input type="email" id="email" name="Email du client" class="form-input" placeholder="votre@email.com" required>
+          <input type="email" id="email" name="email" class="form-input" placeholder="votre@email.com" required>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="tracking">Numéro de suivi (optionnel)</label>
-          <input type="text" id="tracking" name="Numéro de suivi" class="form-input" placeholder="8R692719325FR">
+          <input type="text" id="tracking" name="tracking" class="form-input" placeholder="8R692719325FR">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="request_type">Type de demande *</label>
-          <select id="request_type" name="Type de demande" class="form-select" required>
+          <select id="request_type" name="request_type" class="form-select" required>
             <option value="">Sélectionnez un sujet</option>
             <option value="🔍 Problème avec le suivi">Problème avec le suivi</option>
             <option value="❌ Numéro de suivi non reconnu">Numéro de suivi non reconnu</option>
@@ -379,7 +379,7 @@
         
         <div class="form-group">
           <label class="form-label" for="message">Votre message *</label>
-          <textarea id="message" name="Message détaillé" class="form-textarea" placeholder="Décrivez votre problème en détail..." required></textarea>
+          <textarea id="message" name="message" class="form-textarea" placeholder="Décrivez votre problème en détail..." required></textarea>
         </div>
         
         <button type="submit" class="submit-btn" id="submitBtn">
@@ -425,10 +425,38 @@
       try {
         const formData = new FormData(form);
         
-        // IMPORTANT: Configurer le Reply-To avec l'email du client
+        // Récupérer les données du formulaire
+        const clientName = document.getElementById('name').value;
         const clientEmail = document.getElementById('email').value;
+        const trackingNumber = document.getElementById('tracking').value;
+        const requestType = document.getElementById('request_type').value;
+        const clientMessage = document.getElementById('message').value;
+        
+        // Construire le message personnalisé
+        const customMessage = `
+═══════════════════════════════════════
+🎯 NOUVEAU MESSAGE TRACKINMORE SUPPORT  
+═══════════════════════════════════════
+
+Un client a envoyé un message depuis le site TrackinMore.
+
+👤 NOM DU CLIENT: ${clientName}
+📧 EMAIL DU CLIENT: ${clientEmail}
+📦 NUMÉRO DE SUIVI: ${trackingNumber || 'Non renseigné'}
+🎯 TYPE DE DEMANDE: ${requestType}
+
+💬 MESSAGE DU CLIENT:
+${clientMessage}
+
+═══════════════════════════════════════
+Répondez directement à cet email pour contacter le client.
+`;
+
+        // Remplacer le message par notre version personnalisée
+        formData.set('message', customMessage);
+        
+        // Configurer le Reply-To avec l'email du client
         formData.append('_replyto', clientEmail);
-        formData.append('_cc', clientEmail);
         
         const response = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
